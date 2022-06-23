@@ -125,7 +125,7 @@ def main(argv = None):
     #h_fc2 = tf.nn.relu(tf.matmul(h_fc1_drop,W_fc2)+b_fc2)  #Nonex30 的向量
     
     #Feature representation fully connected
-    dna_full = tf.concat([h_fc2,xs_load],1)
+    dna_full = tf.concat([h_fc2,xs_load],1)     # DNK   do not understand      use print to check out
     #None x32 的向量
     
     #Define FC3
@@ -217,7 +217,7 @@ def main(argv = None):
                     print('   '+str(iteration)+' iteration of '+str(num_train // batch_size))
                 #These are the training and testing stuff        32x24 = 768.
                 x_batch_node = np_data_train[iteration*batch_size:iteration*batch_size+batch_size,0:768]
-                x_batch_load = np_data_train[iteration*batch_size:iteration*batch_size+batch_size,768:770]
+                x_batch_load = np_data_train[iteration*batch_size:iteration*batch_size+batch_size,768:770]          # DNK   do not understand      use print to check out
                 #This is our target stuff     1538-770=768   also a 32x24
                 y_batch = np_data_train[iteration*batch_size:iteration*batch_size+batch_size,770:1538]
 
