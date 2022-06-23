@@ -10,7 +10,9 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 #import pandas as pd
 import numpy as np
 #import matplotlib.pyplot as plt
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import time
 from tflearn.layers.conv import global_avg_pool
 from tensorflow.contrib.layers import conv2d_transpose
