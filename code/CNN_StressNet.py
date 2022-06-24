@@ -15,7 +15,8 @@ import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import time
 from tflearn.layers.conv import global_avg_pool
-from tensorflow.contrib.layers import conv2d_transpose
+##from tensorflow.contrib.layers import conv2d_transpose
+#from tf.nn import conv2d_transpose
 
 # The best results: MSE  MAE
 np.random.seed(0)
@@ -153,9 +154,10 @@ def model(x):
 	x8 = residual_block(x7, 128, 'res5') # None*6*8*128
 
 	# pad_x8 = tf.pad(x8, [[0 ,0], [1, 1], [1, 1], [0, 0]], 'CONSTANT')
-	x9 =  bn(relu(conv2d_transpose(x8, 64, kernel_size=(3, 3), stride=(2, 2), padding='SAME', activation_fn=None))) # None*12*16*64
+	x9 =  bn(relu(tf.layers.conv2d_transpose(x8, 64, kernel_size=(3, 3), strides=(2, 2), padding='SAME', activation=None))) # None*12*16*64
+	# x9 =  bn(relu(conv2d_transpose(x8, 64, kernel_size=(3, 3), stride=(2, 2), padding='SAME', activation_fn=None))) # None*12*16*64     same difference in x10
 	# pad_x9 = tf.pad(x9, [[0 ,0], [1, 1], [1, 1], [0, 0]], 'CONSTANT')
-	x10 =  bn(relu(conv2d_transpose(x9, 32, kernel_size=(3, 3), stride=(2, 2), padding='SAME', activation_fn=None))) # None*24*32*32
+	x10 =  bn(relu(tf.layers.conv2d_transpose(x9, 32, kernel_size=(3, 3), strides=(2, 2), padding='SAME', activation=None))) # None*24*32*32
 	
 	w4 = weight_variable([9, 9, 32, 1])
 	#b4 = bias_variable([1])
@@ -278,6 +280,9 @@ def main(argv = None):
 				_, batch_loss, batch_mae = sess.run([train_step, mse, mae], feed_dict={xs:x_batch,ys:y_batch})
 				total_mse += batch_loss
 				total_mae += batch_mae
+				unit_iter = (num_train // batch_size) // 6   #added
+				if iter_train % unit_iter == 0:     #added
+					print('   ' + str(iter_train) + ' iteration of ' + str(num_train // batch_size))     #added
 
 			print('Epoch:',epoch,', Learning rate:',l_rate)
 
